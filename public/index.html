@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Express App</title>
+</head>
+
+<body>
+    <h1>Express App</h1>
+    <input type="text" id="textInput" placeholder="Enter your Name">
+    <button id="getData">get response from server</button>
+    <br><br>
+    <button id="getAPIData">get response from placeholder API</button>
+    <br><br>
+    <div id="result"></div>
+    <script>
+
+        document.getElementById('getData').addEventListener('click', async () => {
+            const inputField = document.getElementById('textInput');
+            const enteredText = inputField.value;
+            inputField.value = "";
+            const dataToSend = { message: enteredText };
+            const response = await fetch('/api/getData', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataToSend)
+            });
+            const responseData = await response.json();
+            console.log('Response from backend:', responseData);
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = responseData.message;
+        });
+
+        document.getElementById('getAPIData').addEventListener('click', async () => {
+            const response = await fetch('/api/fetchData');
+            const responseData = await response.json();
+            console.log('Response from backend:', responseData);
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = JSON.stringify(responseData, null, 2);
+        });
+    </script>
+</body>
+
+</html>
